@@ -21,6 +21,7 @@ import { setTaskCompleted, setTaskIncomplete } from "@/features/tasksThunks.ts";
 export function TaskList() {
   const dispatch = useAppDispatch();
   const tasks = useSelector((state: RootState) => state.tasks.tasks);
+  const isLoading = useSelector((state: RootState) => state.tasks.loading);
 
   // Handle toggling task completion
   const handleToggleCompletion = (task: Task) => {
@@ -58,6 +59,20 @@ export function TaskList() {
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+
+  if (isLoading) {
+    return (
+      <Table>
+        <TableBody>
+          <TableRow>
+            <TableCell colSpan={columns.length} className="h-24 text-center">
+              Loading...
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    );
+  }
 
   return (
     <Table>
