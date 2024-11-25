@@ -1,3 +1,10 @@
+
+# info
+uses generated api calls from openapi-generator-cli, needs running server to generate api calls
+```bash
+openapi-generator-cli generate -i http://localhost:8080/v3/api-docs -g typescript-axios -o src/api/generated
+```
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
