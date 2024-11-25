@@ -16,12 +16,8 @@ import {
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "@/store/store.ts";
 import { Task } from "@/api/generated";
-import {
-  deleteTask,
-  setTaskCompleted,
-  setTaskIncomplete,
-} from "@/features/tasksThunks.ts";
-import { Trash } from "lucide-react";
+import { setTaskCompleted, setTaskIncomplete } from "@/features/tasksThunks.ts";
+import DeleteTaskButton from "@/components/DeleteTaskButton.tsx";
 
 export function TaskList() {
   const dispatch = useAppDispatch();
@@ -35,11 +31,6 @@ export function TaskList() {
     } else {
       dispatch(setTaskCompleted(task.id));
     }
-  };
-
-  // Handle task deletion
-  const handleDeleteTask = (taskId: string) => {
-    dispatch(deleteTask(taskId));
   };
 
   const columns: ColumnDef<Task>[] = [
@@ -65,15 +56,7 @@ export function TaskList() {
     {
       id: "actions",
       header: "Actions",
-      cell: ({ row }) => (
-        <button
-          onClick={() => handleDeleteTask(row.original.id)}
-          className="text-red-600 hover:text-red-800"
-          aria-label="Delete task"
-        >
-          <Trash className="w-5 h-5" />
-        </button>
-      ),
+      cell: ({ row }) => <DeleteTaskButton taskId={row.original.id} />,
     },
   ];
 
