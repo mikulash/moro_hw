@@ -29,7 +29,19 @@ export const addTask = createAsyncThunk(
   },
 );
 
-export const updateTask = createAsyncThunk(
+export const fetchCompletedTasks = createAsyncThunk(
+  "tasks/fetchCompletedTasks",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await tasksApi.tasksCompletedGet();
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+export const updateTaskText = createAsyncThunk(
   "tasks/updateTask",
   async ({ id, text }: { id: string; text: string }, { rejectWithValue }) => {
     try {
@@ -48,6 +60,31 @@ export const deleteTask = createAsyncThunk(
     try {
       await tasksApi.tasksIdDelete(id);
       return id;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+// endpoint should be at least PUT btw
+export const setTaskCompleted = createAsyncThunk(
+  "tasks/setTaskCompleted",
+  async ({ id }: { id: string }, { rejectWithValue }) => {
+    try {
+      const response = await tasksApi.tasksIdCompletePost(id);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+export const setTaskIncomplete = createAsyncThunk(
+  "tasks/setTaskIncomplete",
+  async ({ id }: { id: string }, { rejectWithValue }) => {
+    try {
+      const response = await tasksApi.tasksIdIncompletePost(id);
+      return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
