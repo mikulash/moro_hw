@@ -1,9 +1,5 @@
-import * as React from "react";
 import {
   ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -15,6 +11,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import { Input } from "@/components/ui/input.tsx";
 
 const data: Payment[] = [
   {
@@ -27,17 +24,14 @@ const data: Payment[] = [
   },
   {
     id: "derv1ws0",
-
     email: "Monserrat44@gmail.com",
   },
   {
     id: "5kma53ae",
-
     email: "Silas22@gmail.com",
   },
   {
     id: "bhqecj4p",
-
     email: "carmella@hotmail.com",
   },
 ];
@@ -79,35 +73,20 @@ const columns: ColumnDef<Payment>[] = [
 ];
 
 export function TaskList() {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
-
   const table = useReactTable({
     data,
     columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
   });
 
   return (
     <div className="w-full">
+      <div className="flex items-center py-4">
+        <Input placeholder="What needs to be done..." className="max-w-sm" />
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableBody>
