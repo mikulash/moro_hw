@@ -14,9 +14,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useSelector } from "react-redux";
-import { RootState, useAppDispatch } from "@/store/store.ts"; // Adjust path as needed
+import { RootState, useAppDispatch } from "@/store/store.ts";
 import { Task } from "@/api/generated";
-import { setTaskCompleted, setTaskIncomplete } from "@/features/tasksThunks.ts"; // Adjust path as needed
+import {
+  deleteTask,
+  setTaskCompleted,
+  setTaskIncomplete,
+} from "@/features/tasksThunks.ts";
+import { Trash } from "lucide-react";
 
 export function TaskList() {
   const dispatch = useAppDispatch();
@@ -30,6 +35,11 @@ export function TaskList() {
     } else {
       dispatch(setTaskCompleted(task.id));
     }
+  };
+
+  // Handle task deletion
+  const handleDeleteTask = (taskId: string) => {
+    dispatch(deleteTask(taskId));
   };
 
   const columns: ColumnDef<Task>[] = [
@@ -51,6 +61,19 @@ export function TaskList() {
       accessorKey: "text",
       header: "Task",
       cell: ({ row }) => <div>{row.getValue("text")}</div>,
+    },
+    {
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) => (
+        <button
+          onClick={() => handleDeleteTask(row.original.id)}
+          className="text-red-600 hover:text-red-800"
+          aria-label="Delete task"
+        >
+          <Trash className="w-5 h-5" />
+        </button>
+      ),
     },
   ];
 
