@@ -69,7 +69,7 @@ export const deleteTask = createAsyncThunk(
 // endpoint should be at least PUT btw
 export const setTaskCompleted = createAsyncThunk(
   "tasks/setTaskCompleted",
-  async ({ id }: { id: string }, { rejectWithValue }) => {
+  async (id: string, { rejectWithValue }) => {
     try {
       const response = await tasksApi.tasksIdCompletePost(id);
       return response.data;
@@ -81,7 +81,7 @@ export const setTaskCompleted = createAsyncThunk(
 
 export const setTaskIncomplete = createAsyncThunk(
   "tasks/setTaskIncomplete",
-  async ({ id }: { id: string }, { rejectWithValue }) => {
+  async (id: string, { rejectWithValue }) => {
     try {
       const response = await tasksApi.tasksIdIncompletePost(id);
       return response.data;

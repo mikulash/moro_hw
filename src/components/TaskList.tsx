@@ -13,12 +13,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { RootState } from "@/store/store.ts";
 import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "@/store/store.ts"; // Adjust path as needed
 import { Task } from "@/api/generated";
+import { setTaskCompleted, setTaskIncomplete } from "@/features/tasksThunks.ts"; // Adjust path as needed
 
 export function TaskList() {
+  const dispatch = useAppDispatch();
   const tasks = useSelector((state: RootState) => state.tasks.tasks);
+
+  // Handle toggling task completion
+  const handleToggleCompletion = (task: Task) => {
+    if (task.completed) {
+      dispatch(setTaskIncomplete(task.id));
+    } else {
+      dispatch(setTaskCompleted(task.id));
+    }
+  };
 
   const columns: ColumnDef<Task>[] = [
     {
@@ -28,7 +39,7 @@ export function TaskList() {
       cell: ({ row }) => (
         <Checkbox
           checked={row.original.completed}
-          // onCheckedChange={() => handleToggleCompletion(row.original.id)}
+          onCheckedChange={() => handleToggleCompletion(row.original)}
           aria-label="Toggle task completion"
         />
       ),
