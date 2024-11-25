@@ -2,7 +2,7 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { tasksApi } from "../api/apiClientConfig.ts";
-import { CreateTask, UpdateTask } from "../api/generated";
+import { CreateTask, UpdateTask } from "@/api/generated";
 
 export const fetchTasks = createAsyncThunk(
   "tasks/fetchTasks",
