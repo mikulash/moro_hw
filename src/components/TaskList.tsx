@@ -2,94 +2,72 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
 import { Checkbox } from "@/components/ui/checkbox";
-
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-
-const data: Payment[] = [
-  {
-    id: "m5gr84i9",
-    email: "ken99@yahoo.com",
-  },
-  {
-    id: "3u1reuv4",
-    email: "Abe45@gmail.com",
-  },
-  {
-    id: "derv1ws0",
-    email: "Monserrat44@gmail.com",
-  },
-  {
-    id: "5kma53ae",
-    email: "Silas22@gmail.com",
-  },
-  {
-    id: "bhqecj4p",
-    email: "carmella@hotmail.com",
-  },
-];
-
-export type Payment = {
-  id: string;
-  email: string;
-};
-const columns: ColumnDef<Payment>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "email",
-    header: () => {
-      return <div>Email</div>;
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
-  },
-];
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { RootState } from "@/store/store.ts";
+import { useSelector } from "react-redux";
+import { Task } from "@/api/generated";
 
 export function TaskList() {
+  const tasks = useSelector((state: RootState) => state.tasks.tasks);
+
+  const columns: ColumnDef<Task>[] = [
+    {
+      accessorKey: "completed",
+      id: "completed",
+      header: "Completed",
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.original.completed}
+          // onCheckedChange={() => handleToggleCompletion(row.original.id)}
+          aria-label="Toggle task completion"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: "text",
+      header: "Task",
+      cell: ({ row }) => <div>{row.getValue("text")}</div>,
+    },
+  ];
+
   const table = useReactTable({
-    data,
+    data: tasks,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
   });
 
   return (
     <Table>
+      <TableHeader>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <TableRow key={headerGroup.id}>
+            {headerGroup.headers.map((header) => (
+              <TableHead key={header.id}>
+                {flexRender(
+                  header.column.columnDef.header,
+                  header.getContext(),
+                )}
+              </TableHead>
+            ))}
+          </TableRow>
+        ))}
+      </TableHeader>
       <TableBody>
         {table.getRowModel().rows?.length ? (
           table.getRowModel().rows.map((row) => (
-            <TableRow
-              key={row.id}
-              data-state={row.getIsSelected() && "selected"}
-            >
+            <TableRow key={row.id}>
               {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -100,7 +78,7 @@ export function TaskList() {
         ) : (
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">
-              No results.
+              No tasks found.
             </TableCell>
           </TableRow>
         )}
