@@ -18,7 +18,11 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "@/store/store";
 import { Task } from "@/api/generated";
-import { setTaskCompleted, setTaskIncomplete } from "@/features/tasksThunks";
+import {
+  setTaskCompleted,
+  setTaskIncomplete,
+  updateTaskText,
+} from "@/features/tasksThunks";
 import DeleteTaskButton from "@/components/DeleteTaskButton.tsx";
 
 enum FilterState {
@@ -42,6 +46,29 @@ export function TaskList() {
       dispatch(setTaskIncomplete(task.id));
     } else {
       dispatch(setTaskCompleted(task.id));
+    }
+  };
+
+  const [editableTaskId, setEditableTaskId] = useState<string | null>(null);
+  const [editedText, setEditedText] = useState<string>("");
+
+  const handleEditTask = (task: Task) => {
+    setEditableTaskId(task.id);
+    setEditedText(task.text); // Set the current task text for editing
+  };
+
+  const handleSaveEdit = (task: Task) => {
+    if (editedText.trim() === "") return; // Optional: Prevent saving empty text
+    // Dispatch action to save the updated task
+    dispatch(updateTaskText({ id: task.id, text: editedText }));
+    setEditableTaskId(null); // Exit edit mode
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent, task: Task) => {
+    if (e.key === "Enter") {
+      handleSaveEdit(task);
+    } else if (e.key === "Escape") {
+      setEditableTaskId(null); // Exit edit mode without saving
     }
   };
 
@@ -77,7 +104,27 @@ export function TaskList() {
     {
       accessorKey: "text",
       header: "Task",
-      cell: ({ row }) => <div>{row.getValue("text")}</div>,
+      cell: ({ row }) => {
+        const task = row.original;
+        return editableTaskId === task.id ? (
+          <input
+            type="text"
+            value={editedText}
+            onChange={(e) => setEditedText(e.target.value)}
+            onKeyDown={(e) => handleKeyDown(e, task)}
+            onBlur={() => setEditableTaskId(null)} // Exit edit mode on blur
+            autoFocus
+            className="border rounded px-2 py-1 w-full"
+          />
+        ) : (
+          <div
+            onDoubleClick={() => handleEditTask(task)}
+            className="cursor-pointer"
+          >
+            {row.getValue("text")}
+          </div>
+        );
+      },
     },
     {
       id: "actions",
