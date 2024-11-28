@@ -21,7 +21,7 @@ export function NewTaskInput() {
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      handleAddTask(); // Call the same function when Enter is pressed
+      handleAddTask();
     }
   };
 
