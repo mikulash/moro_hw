@@ -1,7 +1,7 @@
 import React from "react";
-import { Trash } from "lucide-react"; // Icon library, adjust the import path if necessary
-import { useAppDispatch } from "@/store/store"; // Adjust the path as needed
-import { deleteTask } from "@/features/tasksThunks"; // Adjust the path as needed
+import { Trash } from "lucide-react";
+import { useAppDispatch } from "@/store/store.ts";
+import { deleteTask } from "@/features/tasksThunks.ts";
 
 interface TrashButtonProps {
   taskId: string;

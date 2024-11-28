@@ -7,7 +7,7 @@ import {
 } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox.tsx";
 import TaskRow from "@/components/tasks/TaskRow.tsx";
-import DeleteTaskButton from "@/components/DeleteTaskButton.tsx";
+import DeleteTaskButton from "@/components/tasks/DeleteTaskButton.tsx";
 import {
   Table,
   TableBody,

@@ -1,7 +1,7 @@
 import "./App.css";
 import { useAppDispatch } from "./store/store.ts";
 import { TaskList } from "@/components/tasks/TaskList.tsx";
-import { NewTaskInput } from "@/components/NewTaskInput.tsx";
+import { NewTaskInput } from "@/components/tasks/NewTaskInput.tsx";
 import { fetchTasks } from "@/features/tasksThunks.ts";
 import { useEffect } from "react";
 
