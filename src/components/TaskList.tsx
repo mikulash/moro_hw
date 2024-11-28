@@ -127,7 +127,10 @@ export function TaskList() {
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
+                <TableHead
+                  key={header.id}
+                  className="text-left align-middle px-4 py-2"
+                >
                   {flexRender(
                     header.column.columnDef.header,
                     header.getContext(),
@@ -142,7 +145,10 @@ export function TaskList() {
             table.getRowModel().rows.map((row) => (
               <TableRow key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                  <TableCell
+                    key={cell.id}
+                    className="text-left align-middle px-4 py-2"
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
