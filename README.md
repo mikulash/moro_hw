@@ -1,3 +1,7 @@
+## to run
+
+`npm install`
+`npm run dev`
 
 # info
 uses generated api calls from openapi-generator-cli, needs running server to generate api calls
