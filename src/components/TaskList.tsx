@@ -56,11 +56,13 @@ export function TaskList() {
     }
   }, [tasks, filter]);
 
+  const doneTasksCount = tasks.filter((task) => task.completed).length;
+
   const columns: ColumnDef<Task>[] = [
     {
       accessorKey: "completed",
       id: "completed",
-      header: "Completed",
+      header: `Completed (${doneTasksCount})`,
       cell: ({ row }) => (
         <Checkbox
           checked={row.original.completed}
@@ -141,7 +143,6 @@ export function TaskList() {
         </TableBody>
       </Table>
 
-      {/* Toggle Group for Filtering */}
       <div className="mt-4 flex justify-center">
         <ToggleGroup
           type="single"
