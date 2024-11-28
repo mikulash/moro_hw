@@ -31,6 +31,7 @@ export function TaskList() {
   const dispatch = useAppDispatch();
   const tasks = useSelector((state: RootState) => state.tasks.tasks);
   const isLoading = useSelector((state: RootState) => state.tasks.loading);
+  const error = useSelector((state: RootState) => state.tasks.error);
 
   // State for filtering tasks using the enum
   const [filter, setFilter] = useState<FilterState>(FilterState.All);
@@ -98,6 +99,20 @@ export function TaskList() {
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">
               Loading...
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    );
+  }
+
+  if (error !== null) {
+    return (
+      <Table>
+        <TableBody>
+          <TableRow>
+            <TableCell colSpan={columns.length} className="h-24 text-center">
+              Error: {error}
             </TableCell>
           </TableRow>
         </TableBody>
